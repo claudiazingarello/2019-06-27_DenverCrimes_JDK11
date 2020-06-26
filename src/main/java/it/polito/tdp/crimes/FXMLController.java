@@ -1,8 +1,10 @@
 package it.polito.tdp.crimes;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.crimes.model.Arco;
 import it.polito.tdp.crimes.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,16 +25,16 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ComboBox<?> boxCategoria;
+    private ComboBox<String> boxCategoria;
 
     @FXML
-    private ComboBox<?> boxMese;
+    private ComboBox<Integer> boxMese;
 
     @FXML
     private Button btnAnalisi;
 
     @FXML
-    private ComboBox<?> boxArco;
+    private ComboBox<Arco> boxArco;
 
     @FXML
     private Button btnPercorso;
@@ -42,12 +44,49 @@ public class FXMLController {
 
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
-
+    	txtResult.clear();
+    	
+    	Arco arco = boxArco.getValue();
+    	if(arco == null) {
+    		txtResult.appendText("ERRORE: devi selezionare un arco!");
+    		return;
+    	}
+    	
+    	List<String> percorso = model.calcolaPercorso(arco.getT1(), arco.getT2());
+    	for(String s: percorso) {
+    		txtResult.appendText(s.toString() +"\n");
+    	}
+    	
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-
+    	txtResult.clear();
+    	
+    	String categoria = boxCategoria.getValue();
+    	
+    	if(categoria == null ) {
+    		txtResult.appendText("ERRORE: scegliere categoria");
+    		return;
+    	}
+    	
+    	Integer mese = boxMese.getValue();
+    	if(mese == null ) {
+    		txtResult.appendText("ERRORE: scegliere mese");
+    		return;
+    	}
+    	
+    	model.creaGrafo(categoria, mese);
+    	
+    	txtResult.appendText("ELENCO DI ARCHI:\n");
+    	List<Arco> archi = model.getArchi();
+    	for(Arco a : archi) {
+    		txtResult.appendText(a.getT1()+" & "+a.getT2()+" ("+a.getPeso()+")\n");
+    	}
+    	btnPercorso.setDisable(false);
+    	boxArco.setDisable(false);
+    	boxArco.getItems().addAll(model.getArchi());
+    	
     }
 
     @FXML
@@ -63,5 +102,10 @@ public class FXMLController {
 
 	public void setModel(Model model) {
 		this.model = model;
+		
+		boxCategoria.getItems().addAll(model.getCategorie());
+		boxMese.getItems().addAll(model.getMesi());
+		btnPercorso.setDisable(true);
+		boxArco.setDisable(true);
 	}
 }
