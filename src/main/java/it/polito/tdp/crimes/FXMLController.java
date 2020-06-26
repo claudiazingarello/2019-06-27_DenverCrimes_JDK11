@@ -23,10 +23,10 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ComboBox<?> boxCategoria;
+    private ComboBox<String> boxCategoria;
 
     @FXML
-    private ComboBox<?> boxAnno;
+    private ComboBox<Integer> boxAnno;
 
     @FXML
     private Button btnAnalisi;
@@ -42,12 +42,29 @@ public class FXMLController {
 
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
-
+    	txtResult.clear();
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-
+    	txtResult.clear();
+    	
+    	String categoria = boxCategoria.getValue();
+    	if(categoria == null) {
+    		txtResult.appendText("ERRORE: scegliere una categoria!");
+    		return;
+    	}
+    	Integer anno = boxAnno.getValue();
+    	if(anno == null) {
+    		txtResult.appendText("ERRORE: scegliere un anno!");
+    		return;
+    	}
+    	
+    	model.creaGrafo(categoria, anno);
+    	
+    	txtResult.appendText("Grafo creato!");
+    	btnPercorso.setDisable(false);
+    	boxArco.setDisable(false);
     }
 
     @FXML
@@ -63,5 +80,10 @@ public class FXMLController {
 
 	public void setModel(Model model) {
 		this.model = model;
+		
+		boxCategoria.getItems().addAll(model.getAllCategory());
+		boxAnno.getItems().addAll(model.getAllYears());
+		btnPercorso.setDisable(true);
+		boxArco.setDisable(true);
 	}
 }
