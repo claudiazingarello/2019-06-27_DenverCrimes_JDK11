@@ -83,6 +83,7 @@ public class FXMLController {
 		
 		boxCategoria.getItems().addAll(model.getAllCategory());
 		boxAnno.getItems().addAll(model.getAllYears());
+		
 		btnPercorso.setDisable(true);
 		boxArco.setDisable(true);
 	}

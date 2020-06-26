@@ -120,7 +120,7 @@ public class EventsDAO {
 	}
 	
 	public List<String> getTipiReato(String categoria, Integer anno) {
-		String sql = "SELECT DISTINCT e.offense_type_id as tid" + 
+		String sql = "SELECT DISTINCT e.offense_type_id as tid " + 
 				"FROM `events` AS e " + 
 				"WHERE YEAR(e.reported_date) = ? AND e.offense_category_id = ?" ;
 		try {
@@ -157,7 +157,7 @@ public class EventsDAO {
 				"FROM `events` AS e1, `events` AS e2 " + 
 				"WHERE YEAR(e1.reported_date) = ? AND e1.offense_category_id = ? " + 
 				"AND e1.offense_category_id = e2.offense_category_id AND YEAR(e1.reported_date) = YEAR(e2.reported_date) " + 
-				"AND e1.offense_type_id < e2.offense_type_id" ;
+				"AND e1.offense_type_id < e2.offense_type_id GROUP BY t1, t2" ;
 		try {
 			Connection conn = DBConnect.getConnection() ;
 
