@@ -1,5 +1,7 @@
 package it.polito.tdp.crimes.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jgrapht.Graph;
@@ -42,5 +44,26 @@ public class Model {
 		
 		
 		System.out.println("Grafo creato!\n#vertici:" +grafo.vertexSet().size()+"\n#archi: "+ grafo.edgeSet().size());
+	}
+	
+	public List<Arco> getArchi(){
+		double pesoMax = 0.0;
+		List<Arco> archi = new ArrayList<Arco>();
+		
+		for(DefaultWeightedEdge e : grafo.edgeSet()) {
+			if(grafo.getEdgeWeight(e) > pesoMax) {
+				pesoMax = grafo.getEdgeWeight(e);
+			}
+		}
+		
+		for(DefaultWeightedEdge e : grafo.edgeSet()) {
+			if(grafo.getEdgeWeight(e) == pesoMax) {
+				Arco a = new Arco(grafo.getEdgeSource(e), grafo.getEdgeTarget(e), pesoMax);
+				archi.add(a);
+			}
+		}
+		
+		Collections.sort(archi);
+		return archi;
 	}
 }

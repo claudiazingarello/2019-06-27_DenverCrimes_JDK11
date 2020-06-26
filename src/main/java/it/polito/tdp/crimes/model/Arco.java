@@ -1,12 +1,11 @@
 package it.polito.tdp.crimes.model;
 
-public class Adiacenza {
-	String t1;
-	String t2;
-	Double peso;
+public class Arco implements Comparable<Arco>{
+	private String t1;
+	private String t2;
+	private Double peso;
 	
-	
-	public Adiacenza(String t1, String t2, Double peso) {
+	public Arco(String t1, String t2, Double peso) {
 		super();
 		this.t1 = t1;
 		this.t2 = t2;
@@ -31,9 +30,15 @@ public class Adiacenza {
 		this.peso = peso;
 	}
 	@Override
+	public int compareTo(Arco o) {
+		return this.t1.compareTo(o.getT2());
+	}
+	@Override
 	public String toString() {
-		return t1 + ", " + t2 + " (" + peso + ")";
+		return "Arco [t1=" + t1 + ", t2=" + t2 + ", peso=" + peso + "]";
 	}
 	
 	
+	
+
 }

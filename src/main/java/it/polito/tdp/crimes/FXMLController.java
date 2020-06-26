@@ -1,8 +1,10 @@
 package it.polito.tdp.crimes;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.crimes.model.Arco;
 import it.polito.tdp.crimes.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +34,7 @@ public class FXMLController {
     private Button btnAnalisi;
 
     @FXML
-    private ComboBox<?> boxArco;
+    private ComboBox<Arco> boxArco;
 
     @FXML
     private Button btnPercorso;
@@ -43,6 +45,9 @@ public class FXMLController {
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
     	txtResult.clear();
+    	
+    	Arco arco = boxArco.getValue();
+    	
     }
 
     @FXML
@@ -62,9 +67,15 @@ public class FXMLController {
     	
     	model.creaGrafo(categoria, anno);
     	
-    	txtResult.appendText("Grafo creato!");
+    	txtResult.appendText("Grafo creato!\n");
     	btnPercorso.setDisable(false);
     	boxArco.setDisable(false);
+    	
+    	List<Arco> archi = model.getArchi();
+    	for(Arco a : archi){
+    		txtResult.appendText(a.toString()+"\n");
+    	}
+    	boxArco.getItems().addAll(archi);
     }
 
     @FXML
