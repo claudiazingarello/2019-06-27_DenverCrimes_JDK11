@@ -16,6 +16,10 @@ public class Model {
 	private List<String> tipiReato;
 	private Graph<String, DefaultWeightedEdge> grafo;
 	
+	//variabili ricorsione
+	private List<String> percorsoBest;
+	private Double pesoMin;
+	
 	public Model() {
 		dao = new EventsDAO();
 	}
@@ -65,5 +69,52 @@ public class Model {
 		
 		Collections.sort(archi);
 		return archi;
+	}
+
+	public List<String> calcolaPercorso(Arco arco) {
+
+		// // procedura chiamate che deve predisporre le variabili della ricorsione di modo che possano 
+		// lavorare in modo corretto
+		percorsoBest = new ArrayList<String>();
+		pesoMin = 0.0;
+		
+		// creo anche parziale
+		List<String> parziale = new ArrayList<String>();
+		
+		cerca(parziale, arco.getT1(), 0);
+		
+		return percorsoBest;
+	}
+	
+	public void cerca(List<String> parziale, String source, int L ) {
+		
+		//siamo nei CASI TERMINALI
+	
+		// N.B. ricordarsi che quando voglio sostituire la soluzione migliore con parziale devo CLONARE
+		// l'oggetto
+		// per ogni caso terminale devo vedere se andare avanti o se mettere return
+		// considero casi terminali prima della fine della ricorsione e anche caso terminale di quando ho finito
+		// i livelli
+		
+		// se no GENERIAMO SOTTO-PROBLEMI
+		// ci chiediamo: L di parziale al livello L e' da aggiungere oppure no?
+		// => provo a non aggiungerlo a provo ad aggiungerlo:
+		
+		//2. provo ad aggiungerlo: prendo l'attributo che considero ad ogni livello e lo aggiungo a parziale
+		for(String s : grafo.vertexSet()) {
+			if(!parziale.contains(s)) {
+				parziale.add(s);
+				// a questo punto posso fare la ricerca dove pero' parziale e' diverso da come mi e' arrivato
+				cerca(parziale, source, parziale.size()-1);
+			}
+		}
+		
+		
+		
+		
+		//backtracking: rimettiamo le cose a posto
+		/*parziale.remove(---)*/ // QUANDO HO UNA LISTA NON POSSO FARE REMOVE DELL'ELEMENTO MA DEVO PRENDERE L'INDICE
+		
+		
 	}
 }

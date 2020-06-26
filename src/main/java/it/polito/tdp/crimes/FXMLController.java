@@ -47,7 +47,12 @@ public class FXMLController {
     	txtResult.clear();
     	
     	Arco arco = boxArco.getValue();
+    	if(arco == null) {
+    		txtResult.appendText("ERRORE: seleziona un arco!");
+    		return;
+    	}
     	
+    	List<String> percorso = model.calcolaPercorso(arco);
     }
 
     @FXML
